@@ -1,10 +1,5 @@
-using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -19,7 +14,7 @@ public class MenuManager : MonoBehaviour
     public TMP_InputField inputName;
     public GameObject ladderContainer;
     private Vector2 anchorPointEmpire, anchorPointAlliance, initialAnchorPointEmpire, initialAnchorPointAlliance;
-    private float returnSpeed = 0.01f;
+    private float returnSpeed = 0.08f;
     private bool btnPlayClicked = false;
     private bool btnBackClicked = true;
 
@@ -31,7 +26,7 @@ public class MenuManager : MonoBehaviour
         initialAnchorPointEmpire = empireBackground.rectTransform.position;
         initialAnchorPointAlliance = allianceBackground.rectTransform.position;
         anchorPointEmpire = new Vector2(0, Screen.height/2);
-        anchorPointAlliance = new Vector2(Screen.width, Screen.height / 2);
+        anchorPointAlliance = new Vector2(Screen.width, Screen.height/2);
     }
 
     /// <summary>

@@ -1,5 +1,3 @@
-using Unity.VisualScripting;
-
 public static class StaticClass
 {
     private static float influenceValue = 0.5f;

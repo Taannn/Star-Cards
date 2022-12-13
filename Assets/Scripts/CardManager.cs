@@ -1,8 +1,6 @@
 using Newtonsoft.Json;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -24,9 +22,12 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     public TextMeshProUGUI textCard;
     public TextMeshProUGUI storyCard;
     public TextMeshProUGUI yearsText;
+    public TextMeshProUGUI revolutionsText;
     int numberYears = 0;
+    int numberRevolutions = 0;
     public TextMeshProUGUI nameText;
     private bool isDrag = false;
+    private bool rotate = false;
     private Vector3 anchorPoint;
     public float returnSpeed = 0.1f;
     public float rotationSpeed = 0.03f;
@@ -36,6 +37,7 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     private double limitTextLeft = Screen.width * 0.45;
     private double limitTextRight = Screen.width * 0.55;
     private Queue<int> lastStories = new Queue<int>();
+    private float elapsed = 0;
 
     /// <summary>
     /// The first card is generated.
@@ -62,6 +64,14 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     /// </summary>
     void Update()
     {
+        if(Input.touchCount == 2 && numberRevolutions > 0)
+        {
+            isDrag = false;
+            Vector3 diff = Input.GetTouch(1).position - Input.GetTouch(0).position;
+            float angle = (Mathf.Atan2(diff.y, diff.x));
+            shadeText.SetActive(false);
+            imageCard.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Rad2Deg * angle * 4);
+        }
         if (!isDrag)
         {
             imageCard.transform.position = Vector2.Lerp(imageCard.transform.position, anchorPoint, returnSpeed);
@@ -71,6 +81,17 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
             || populationValueSlider.value >= 1 || militaryValueSlider.value >= 1 || moneyValueSlider.value >= 1)
         {
             defeatCard();
+        }
+        if(rotate)
+        {
+            elapsed += Time.deltaTime; // Time.deltaTime return the number of seconds elapsed from last frame, usually ~1/60s
+            if (elapsed > 3)
+            {
+                elapsed = 0;
+                makeRevolution();
+                rotate = false;
+            }
+            imageCard.transform.Rotate(0f, 0f, 20);
         }
     }
 
@@ -86,23 +107,26 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
-        imageCard.transform.position = new Vector2(eventData.position.x, anchorPoint.y - (anchorPoint.y - eventData.position.y) * tranlationYPower);
-        imageCard.transform.rotation = Quaternion.Euler(0, 0, (anchorPoint.x - eventData.position.x) * rotationSpeed);
-        if (eventData.position.x < limitTextLeft)
+        if (isDrag)
         {
-            shadeText.SetActive(true);
-            textCard.alignment = TextAlignmentOptions.Right;
-            textCard.text = currentStory.leftChoice;
-        }
-        else if (eventData.position.x > limitTextRight)
-        {
-            shadeText.SetActive(true);
-            textCard.alignment = TextAlignmentOptions.Left;
-            textCard.text = currentStory.rightChoice;
-        }
-        else
-        {
-            shadeText.SetActive(false);
+            imageCard.transform.position = new Vector2(eventData.position.x, anchorPoint.y - (anchorPoint.y - eventData.position.y) * tranlationYPower);
+            imageCard.transform.rotation = Quaternion.Euler(0, 0, (anchorPoint.x - eventData.position.x) * rotationSpeed);
+            if (eventData.position.x < limitTextLeft)
+            {
+                shadeText.SetActive(true);
+                textCard.alignment = TextAlignmentOptions.Right;
+                textCard.text = currentStory.leftChoice;
+            }
+            else if (eventData.position.x > limitTextRight)
+            {
+                shadeText.SetActive(true);
+                textCard.alignment = TextAlignmentOptions.Left;
+                textCard.text = currentStory.rightChoice;
+            }
+            else
+            {
+                shadeText.SetActive(false);
+            }
         }
     }
 
@@ -113,35 +137,42 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
-        isDrag = false;
-        if(eventData.position.x < limitLeft)
+        if (isDrag)
         {
-            //The story wich have -1 for id is the story to ende the game
-            if (currentStory.id == -1) 
+            isDrag = false;
+            if (eventData.position.x < limitLeft)
             {
-                SceneManager.LoadScene("MenuScene");
+                //The story wich have -1 for id is the story to ende the game
+                if (currentStory.id == -1)
+                {
+                    SceneManager.LoadScene("MenuScene");
+                }
+                else
+                {
+                    this.leftChoice();
+                }
             }
-            else
+            else if (eventData.position.x > limitRight)
             {
-                this.leftChoice();
+                //The story wich have -1 for id is the story to ende the game
+                //The score is sed to the server
+                if (currentStory.id == -1)
+                {
+                    SceneManager.LoadScene("MenuScene");
+                    StartCoroutine(Upload());
+                }
+                else
+                {
+                    this.rightChoice();
+                }
             }
+            textCard.text = "";
+            shadeText.SetActive(false);
         }
-        else if (eventData.position.x > limitRight)
+        else if(numberRevolutions > 0)
         {
-            //The story wich have -1 for id is the story to ende the game
-            //The score is sed to the server
-            if (currentStory.id == -1)
-            {
-                SceneManager.LoadScene("MenuScene");
-                StartCoroutine(Upload());
-            }
-            else
-            {
-                this.rightChoice();
-            }
+            rotate = true;
         }
-        textCard.text = "";
-        shadeText.SetActive(false);
     }
 
     /// <summary>
@@ -149,6 +180,7 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     /// This function modify the slider value according to the choice.
     /// Also, a new card is generated.
     /// If the current story have a substory, the current story is modified.
+    /// All ten years, a new revolution is available.
     /// </summary>
     private void leftChoice()
     {
@@ -166,6 +198,11 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         {
             randomCard();
             numberYears++;
+            if(numberYears % 10 == 0)
+            {
+                numberRevolutions++;
+                revolutionsText.text = numberRevolutions.ToString();
+            }
             yearsText.text = numberYears.ToString();
         }
     }
@@ -175,6 +212,7 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     /// This function modify the slider value according to the choice.
     /// Also, a new card is generated.
     /// If the current story have a substory, the current story is modified.
+    /// All ten years, a new revolution is available.
     /// </summary>
     private void rightChoice()
     {
@@ -192,8 +230,32 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         {
             randomCard();
             numberYears++;
+            if (numberYears % 10 == 0)
+            {
+                numberRevolutions++;
+                revolutionsText.text = numberRevolutions.ToString();
+            }
             yearsText.text = numberYears.ToString();
         }
+    }
+
+    private void makeRevolution() 
+    {
+        numberRevolutions--;
+        revolutionsText.text = numberRevolutions.ToString();
+        if(influenceValueSlider.value > 0.5f)
+        {
+            influenceValueSlider.value = 0.2f;
+            militaryValueSlider.value = 0.7f;
+            populationValueSlider.value = 0.3f;
+        }
+        else
+        {
+            influenceValueSlider.value = 0.8f;
+            militaryValueSlider.value = 0.3f;
+            populationValueSlider.value = 0.7f;
+        }
+        randomCard();
     }
 
     /// <summary>
@@ -255,19 +317,19 @@ public class StoryCard
 {
     public int id;
     public bool? isGood;
+    public string imageCharacter;
     public string story;
     public string leftChoice;
-    public string rightChoice;
-    public string imageCharacter;
     public double influenceLeft;
     public double moneyLeft;
     public double populationLeft;
     public double militaryLeft;
+    public StoryCard storyLeft;
+    public string rightChoice;
     public double influenceRight;
     public double moneyRight;
     public double populationRight;
     public double militaryRight;
-    public StoryCard storyLeft;
     public StoryCard storyRight;
 }
 
