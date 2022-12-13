@@ -35,22 +35,31 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     private double limitRight = Screen.width * 0.7;
     private double limitTextLeft = Screen.width * 0.45;
     private double limitTextRight = Screen.width * 0.55;
+    private Queue<int> lastStories = new Queue<int>();
 
-    private void Awake()
-    {
-        influenceValueSlider.value = StaticClass.InfluenceValue;
-        nameText.text = StaticClass.NameUser;
-        imageCard = GetComponentsInChildren<Image>().First();
-    }
-
+    /// <summary>
+    /// The first card is generated.
+    /// The initial position of the card is set.
+    /// The influence is set according to our faction choice.
+    /// The queue of last stories is set with an id which don't exist
+    /// </summary>
     void Start()
     {
+        lastStories.Enqueue(0);
+        lastStories.Enqueue(0);
+        lastStories.Enqueue(0);
         textCard.text = "";
+        influenceValueSlider.value = StaticClass.InfluenceValue;
+        nameText.text = StaticClass.NameUser;
         cardsInJSON = JsonConvert.DeserializeObject<Stories>(jsonFile.text);
         randomCard();
         anchorPoint = imageCard.rectTransform.position;
     }
 
+    /// <summary>
+    /// If we don't drag, the card return to its position.
+    /// If we game detect that we lost, the defeat card is generated.
+    /// </summary>
     void Update()
     {
         if (!isDrag)
@@ -70,6 +79,11 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         isDrag = true;
     }
 
+    /// <summary>
+    /// During the drag, if the position card is after the limits, the choice text appear.
+    /// Else, the text disapear.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
         imageCard.transform.position = new Vector2(eventData.position.x, anchorPoint.y - (anchorPoint.y - eventData.position.y) * tranlationYPower);
@@ -92,37 +106,30 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         }
     }
 
+    /// <summary>
+    /// If the the user drop the card after the limit, a new story is generated.
+    /// Else, the card return to its position.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
         isDrag = false;
         if(eventData.position.x < limitLeft)
         {
+            //The story wich have -1 for id is the story to ende the game
             if (currentStory.id == -1) 
             {
                 SceneManager.LoadScene("MenuScene");
             }
             else
             {
-                influenceValueSlider.value += (float)currentStory.influenceLeft;
-                moneyValueSlider.value += (float)currentStory.moneyLeft;
-                populationValueSlider.value += (float)currentStory.populationLeft;
-                militaryValueSlider.value += (float)currentStory.militaryLeft;
-                if (currentStory.storyLeft != null)
-                {
-                    currentStory = currentStory.storyLeft;
-                    imageCard.sprite = Resources.Load<Sprite>("ImageCard/" + currentStory.imageCharacter);
-                    storyCard.text = currentStory.story;
-                }
-                else
-                {
-                    randomCard();
-                    numberYears++;
-                    yearsText.text = numberYears.ToString();
-                }
+                this.leftChoice();
             }
         }
         else if (eventData.position.x > limitRight)
         {
+            //The story wich have -1 for id is the story to ende the game
+            //The score is sed to the server
             if (currentStory.id == -1)
             {
                 SceneManager.LoadScene("MenuScene");
@@ -130,43 +137,92 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
             }
             else
             {
-                influenceValueSlider.value += (float)currentStory.influenceRight;
-                moneyValueSlider.value += (float)currentStory.moneyRight;
-                populationValueSlider.value += (float)currentStory.populationRight;
-                militaryValueSlider.value += (float)currentStory.militaryRight;
-                if (currentStory.storyRight != null)
-                {
-                    currentStory = currentStory.storyRight;
-                    imageCard.sprite = Resources.Load<Sprite>("ImageCard/" + currentStory.imageCharacter);
-                    storyCard.text = currentStory.story;
-                }
-                else
-                {
-                    randomCard();
-                    numberYears++;
-                    yearsText.text = numberYears.ToString();
-                }
+                this.rightChoice();
             }
         }
         textCard.text = "";
         shadeText.SetActive(false);
     }
 
+    /// <summary>
+    /// This function is called when we did the left choice.
+    /// This function modify the slider value according to the choice.
+    /// Also, a new card is generated.
+    /// If the current story have a substory, the current story is modified.
+    /// </summary>
+    private void leftChoice()
+    {
+        influenceValueSlider.value += (float)currentStory.influenceLeft;
+        moneyValueSlider.value += (float)currentStory.moneyLeft;
+        populationValueSlider.value += (float)currentStory.populationLeft;
+        militaryValueSlider.value += (float)currentStory.militaryLeft;
+        if (currentStory.storyLeft != null)
+        {
+            currentStory = currentStory.storyLeft;
+            imageCard.sprite = Resources.Load<Sprite>("ImageCard/" + currentStory.imageCharacter);
+            storyCard.text = currentStory.story;
+        }
+        else
+        {
+            randomCard();
+            numberYears++;
+            yearsText.text = numberYears.ToString();
+        }
+    }
+
+    /// <summary>
+    /// This function is called when we did the right choice.
+    /// This function modify the slider value according to the choice.
+    /// Also, a new card is generated.
+    /// If the current story have a substory, the current story is modified.
+    /// </summary>
+    private void rightChoice()
+    {
+        influenceValueSlider.value += (float)currentStory.influenceRight;
+        moneyValueSlider.value += (float)currentStory.moneyRight;
+        populationValueSlider.value += (float)currentStory.populationRight;
+        militaryValueSlider.value += (float)currentStory.militaryRight;
+        if (currentStory.storyRight != null)
+        {
+            currentStory = currentStory.storyRight;
+            imageCard.sprite = Resources.Load<Sprite>("ImageCard/" + currentStory.imageCharacter);
+            storyCard.text = currentStory.story;
+        }
+        else
+        {
+            randomCard();
+            numberYears++;
+            yearsText.text = numberYears.ToString();
+        }
+    }
+
+    /// <summary>
+    /// This function generate a random card.
+    /// While the card was generate in the 3 last rounds, another card will be generate
+    /// Also, while the card is not able to be with our influence, another card will be generate
+    /// </summary>
     private void randomCard()
     {
         StoryCard newStory;
+        bool isGood = this.influenceValueSlider.value >= 0.5f;
         do
         {
             newStory = cardsInJSON.stories[UnityEngine.Random.Range(0, cardsInJSON.stories.Count)];
-        } while (newStory.id == currentStory.id);
+        } while (!(!lastStories.Contains(newStory.id) && (newStory.isGood == null || newStory.isGood == isGood)));
         currentStory = newStory;
+        lastStories.Enqueue(currentStory.id);
+        lastStories.Dequeue();
         imageCard.sprite = Resources.Load<Sprite>("ImageCard/" + currentStory.imageCharacter);
         storyCard.text = currentStory.story;
     }
 
+    /// <summary>
+    /// This function generate the defeatCard whan we lost.
+    /// This card allow to end the game and go to menu
+    /// </summary>
     private void defeatCard()
     {
-        influenceValueSlider.value = 50;
+        influenceValueSlider.value = 0.5f;
         moneyValueSlider.value = 0;
         populationValueSlider.value = 0;
         militaryValueSlider.value = 0;
@@ -174,9 +230,13 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         currentStory.leftChoice = "Retour au menu";
         currentStory.rightChoice = "Retour au menu + envoi du score";
         imageCard.sprite = Resources.Load<Sprite>("ImageCard/Crash");
-        storyCard.text = "Vous avez perdu, votre royaume est mort";
+        storyCard.text = "Vous avez perdu, votre empire est mort";
     }
 
+    /// <summary>
+    /// This function upload our score on the server with a request post
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Upload()
     {
         WWWForm form = new WWWForm();
@@ -194,6 +254,7 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 public class StoryCard
 {
     public int id;
+    public bool? isGood;
     public string story;
     public string leftChoice;
     public string rightChoice;

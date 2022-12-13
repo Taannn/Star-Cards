@@ -16,6 +16,12 @@ public class GetLadder : MonoBehaviour
         StartCoroutine(GetRequest(StaticClass.ApiURL));
     }
 
+    /// <summary>
+    /// This function do a request get on the server.
+    /// This request returns the first 10 higher scores.
+    /// </summary>
+    /// <param name="uri"></param>
+    /// <returns></returns>
     IEnumerator GetRequest(string uri)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
@@ -43,6 +49,10 @@ public class GetLadder : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This function create all players receive by the request get.
+    /// These players are add the current panel.
+    /// </summary>
     private void createLadderChildren()
     {
         int pos = 1;
@@ -64,12 +74,6 @@ public class Player
 {
     public string name;
     public int number_years;
-
-    public Player(string name, int number_years)
-    {
-        this.name = name;
-        this.number_years = number_years;
-    }
 }
 
 [System.Serializable]

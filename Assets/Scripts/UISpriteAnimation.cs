@@ -14,12 +14,20 @@ public class UISpriteAnimation : MonoBehaviour
     private int m_IndexSprite;
     Coroutine m_CorotineAnim;
     bool IsDone;
+
+    /// <summary>
+    /// This script allow to make an animation with a spritesheet in a canvas image.
+    /// </summary>
     public void Start()
     {
         IsDone = false;
         StartCoroutine(Func_PlayAnimUI());
     }
 
+    /// <summary>
+    /// Every m_Speed seconds, the next image is load in m_Image.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Func_PlayAnimUI()
     {
         yield return new WaitForSeconds(m_Speed);

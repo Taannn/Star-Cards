@@ -23,6 +23,9 @@ public class MenuManager : MonoBehaviour
     private bool btnPlayClicked = false;
     private bool btnBackClicked = true;
 
+    /// <summary>
+    /// Setup the pwo positions available for the buttons to choose a faction.
+    /// </summary>
     void Start()
     {
         initialAnchorPointEmpire = empireBackground.rectTransform.position;
@@ -31,6 +34,10 @@ public class MenuManager : MonoBehaviour
         anchorPointAlliance = new Vector2(Screen.width, Screen.height / 2);
     }
 
+    /// <summary>
+    /// If we entered a name, an animation is done to show the buttons to choose a faction.
+    /// If we go back to the menu, an animation is done to hide these buttons.
+    /// </summary>
     void Update()
     {
         if (btnPlayClicked)
@@ -45,6 +52,10 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This function change the elements in the scene.
+    /// The new shown element is the form to enter a name.
+    /// </summary>
     public void GoToFomeNameUser()
     {
         playButton.SetActive(false);
@@ -55,6 +66,10 @@ public class MenuManager : MonoBehaviour
         confirmNameButton.SetActive(true);
     }
 
+    /// <summary>
+    /// This function change the elements in the scene.
+    /// The new shown elements are the buttons to lanch a game.
+    /// </summary>
     public void GoToScreenFaction()
     {
         if(inputName.text != "")
@@ -69,6 +84,10 @@ public class MenuManager : MonoBehaviour
         btnPlayClicked = true;
     }
 
+    /// <summary>
+    /// This function change the elements in the scene.
+    /// The new shown elements are the menu elements.
+    /// </summary>
     public void GoToScreenMenu()
     {
         playButton.SetActive(true);
@@ -82,6 +101,10 @@ public class MenuManager : MonoBehaviour
         btnBackClicked = true;
     }
 
+    /// <summary>
+    /// This function change the elements in the scene.
+    /// The new shown elements are the ladder elements.
+    /// </summary>
     public void GoToScreenLadder()
     {
         playButton.SetActive(false);
@@ -91,18 +114,29 @@ public class MenuManager : MonoBehaviour
         ladderContainer.SetActive(true);
     }
 
+    /// <summary>
+    /// This function allow to quit the application
+    /// </summary>
     public void Quit()
     {
         Application.Quit();
     }
 
-    public void StartGameAlliance()
+    /// <summary>
+    /// This function change the scene.
+    /// The scene is load with the influence value that we give.
+    /// </summary>
+    public void StartGameGood()
     {
         StaticClass.InfluenceValue = 0.9f;
         SceneManager.LoadScene("GameScene");
     }
 
-    public void StartGameEmpire()
+    /// <summary>
+    /// This function change the scene.
+    /// The scene is load with the influence value that we give.
+    /// </summary>
+    public void StartGameBad()
     {
         StaticClass.InfluenceValue = 0.1f;
         SceneManager.LoadScene("GameScene");
