@@ -2,7 +2,7 @@
     "stories" : [
         {
             "id": 1,
-            "imageCharacter": "Babar",
+            "imageCharacter": "Général",
             "story": "Nous avons capturé des soldats ennemis, que devons-nous faire ?",
             "leftChoice": "Les faire prisonniers",
             "influenceLeft": 0.05,
@@ -11,7 +11,7 @@
             "militaryLeft": -0.07,
             "storyLeft": {
                 "id": 1,
-                "imageCharacter": "Trotro",
+                "imageCharacter": "Général",
                 "story": "Les soldats se sont échappés",
                 "leftChoice": "AH",
                 "influenceLeft": 0.0,
@@ -32,7 +32,7 @@
         },
         {
             "id": 2,
-            "imageCharacter": "Peppa",
+            "imageCharacter": "Médecin",
             "story": "Les habitants contractent une nouvelle maladie !",
             "leftChoice": "Exécuter les malades",
             "influenceLeft": -0.10,
@@ -46,7 +46,7 @@
             "militaryRight": 0.0,
             "storyRight": {
                 "id": 2,
-                "imageCharacter": "Babar",
+                "imageCharacter": "Villageois",
                 "story": "Le médecin n'a pas réussi...",
                 "leftChoice": "...",
                 "influenceLeft": 0.0,
@@ -63,7 +63,7 @@
         {
             "id": 3,
             "isGood" : true,
-            "imageCharacter": "Trotro",
+            "imageCharacter": "Banquier",
             "story": "La planète a été très productive cette année.",
             "leftChoice": "Donnez-moi l'argent",
             "influenceLeft": -0.10,
@@ -78,7 +78,7 @@
         },
         {
             "id": 4,
-            "imageCharacter": "Peppa",
+            "imageCharacter": "Gouvernement",
             "story": "Impact imminent avec un astéroïde !",
             "leftChoice": "Envoyez un vaisseau militaire !",
             "influenceLeft": 0.0,
@@ -94,7 +94,7 @@
         {
             "id": 5,
             "isGood" : false,
-            "imageCharacter": "Peppa",
+            "imageCharacter": "Général",
             "story": "Vous avez gagné une bataille majeure !",
             "leftChoice": "Enrôlez encore plus de soldats",
             "influenceLeft": -0.03,
@@ -109,7 +109,7 @@
         },
         {
             "id": 6,
-            "imageCharacter": "Peppa",
+            "imageCharacter": "Villageois",
             "story": "Une meute de loups intergalactiques dévore nos enfants !",
             "leftChoice": "Vous mentez",
             "influenceLeft": -0.05,
@@ -124,7 +124,7 @@
         },
         {
             "id": 7,
-            "imageCharacter": "Peppa",
+            "imageCharacter": "Banquier",
             "story": "Je n'aime pas le général, c'est un menteur",
             "leftChoice": "Mais il est utile",
             "influenceLeft": -0.05,
@@ -139,7 +139,7 @@
         },
         {
             "id": 8,
-            "imageCharacter": "Peppa",
+            "imageCharacter": "Villageois",
             "story": "Nos recherches sur l'armement ne sont pas concluantes",
             "leftChoice": "Continuez",
             "influenceLeft": 0.0,
@@ -154,7 +154,7 @@
         },
         {
             "id": 9,
-            "imageCharacter": "Peppa",
+            "imageCharacter": "Gouvernement",
             "story": "Nos opposants capitulent",
             "leftChoice": "Très bien !",
             "influenceLeft": -0.05,
@@ -169,7 +169,7 @@
         },
         {
             "id": 10,
-            "imageCharacter": "Peppa",
+            "imageCharacter": "Médecin",
             "story": "Les réserves de nourriture sont empoisonnées",
             "leftChoice": "Le peuple ne s'en rendra pas compte",
             "influenceLeft": -0.15,
@@ -184,7 +184,7 @@
         },
         {
             "id": 11,
-            "imageCharacter": "Peppa",
+            "imageCharacter": "Gouvernement",
             "story": "Johnny Hallyday est mort, le peuple cherche un responsable !",
             "leftChoice": "C'est le général !",
             "influenceLeft": -0.05,
@@ -193,7 +193,7 @@
             "militaryLeft": 0.0,
             "storyLeft": {
                 "id": 11,
-                "imageCharacter": "Peppa",
+                "imageCharacter": "Gouvernement",
                 "story": "Le corps du général fût retrouvé sans vie 2 jours plus tard...",
                 "leftChoice": "...",
                 "influenceLeft": -0.07,
@@ -213,7 +213,7 @@
             "militaryRight": 0.0,
             "storyRight": {
                 "id": 11,
-                "imageCharacter": "Babar",
+                "imageCharacter": "Gouvernement",
                 "story": "Le corps du banquier fût retrouvé sans vie 2 jours plus tard...",
                 "leftChoice": "...",
                 "influenceLeft": 0.0,
@@ -226,6 +226,133 @@
                 "populationRight": 0.0,
                 "militaryRight": 0.0
             }
+        },
+        {
+            "id": 12,
+            "isGood" : true,
+            "imageCharacter": "Gouvernement",
+            "story": "La FIFA veut organiser la coupe du monde sur notre planète",
+            "leftChoice": "Acceptons !",
+            "influenceLeft": 0.0,
+            "moneyLeft": -0.10,
+            "populationLeft": 0.15,
+            "militaryLeft": 0.0,
+            "rightChoice": "C'est une perte d'argent, je garde mes sous !",
+            "influenceRight": -0.05,
+            "moneyRight": 0.05,
+            "populationRight": -0.05,
+            "militaryRight": 0.0
+        },
+        {
+            "id": 13,
+            "isGood" : false,
+            "imageCharacter": "Banquier",
+            "story": "Une explosion a eu lieu dans votre sphère de Dyson construite par vos esclaves.",
+            "leftChoice": "Trouvez d'autres esclaves !",
+            "influenceLeft": -0.07,
+            "moneyLeft": 0.05,
+            "populationLeft": -0.07,
+            "militaryLeft": 0.0,
+            "rightChoice": "Il faut arreter l'esclavage",
+            "influenceRight": 0.10,
+            "moneyRight": -0.15,
+            "populationRight": 0.05,
+            "militaryRight": 0.0
+        },
+        {
+            "id": 14,
+            "isGood" : true,
+            "imageCharacter": "Villageois",
+            "story": "Un kraken cosmique est venu vous apporter des vivres !",
+            "leftChoice": "Tuez-le, il doit en avoir d'autres !",
+            "influenceLeft": -0.07,
+            "moneyLeft": -0.05,
+            "populationLeft": -0.07,
+            "militaryLeft": -0.07,
+            "storyLeft": {
+                "id": 14,
+                "imageCharacter": "Villageois",
+                "story": "Après avoir tué le kraken, une terrible malédiction s'abattit sur votre empire",
+                "leftChoice": "...",
+                "influenceLeft": 0.0,
+                "moneyLeft": 0.0,
+                "populationLeft": 0.0,
+                "militaryLeft": 0.0,
+                "rightChoice": "...",
+                "influenceRight": 0.0,
+                "moneyRight": 0.0,
+                "populationRight": 0.0,
+                "militaryRight": 0.0
+            },
+            "rightChoice": "Accepter gracieusement",
+            "influenceRight": 0.10,
+            "moneyRight": 0.05,
+            "populationRight": 0.05,
+            "militaryRight": 0.0
+        },
+        {
+            "id": 15,
+            "isGood" : false,
+            "imageCharacter": "Villageois",
+            "story": "Certains de vos mercenaires ont pillé notre village",
+            "leftChoice": "Faut bien qu'ils puissent s'amuser.",
+            "influenceLeft": -0.07,
+            "moneyLeft": 0.05,
+            "populationLeft": -0.07,
+            "militaryLeft": 0.10,
+            "rightChoice": "Nous allons les exécuter !",
+            "influenceRight": 0.10,
+            "moneyRight": -0.15,
+            "populationRight": 0.05,
+            "militaryRight": -0.07
+        },
+        {
+            "id": 16,
+            "isGood" : true,
+            "imageCharacter": "Banquier",
+            "story": "Les revenus de votre peuple sont trop bas",
+            "leftChoice": "Bah augmentez-les plus, je veux une société de riches",
+            "influenceLeft": -0.07,
+            "moneyLeft": 0.10,
+            "populationLeft": -0.07,
+            "militaryLeft": 0.0,
+            "rightChoice": "On va réduire le budget de l'armée",
+            "influenceRight": 0.10,
+            "moneyRight": 0.0,
+            "populationRight": 0.05,
+            "militaryRight": -0.10
+        },
+        {
+            "id": 17,
+            "isGood" : false,
+            "imageCharacter": "Médecin",
+            "story": "Votre camp d'esclaves est surpeuplé",
+            "leftChoice": "Tuez-en quelques-uns",
+            "influenceLeft": -0.07,
+            "moneyLeft": 0.05,
+            "populationLeft": -0.07,
+            "militaryLeft": 0.0,
+            "rightChoice": "Enrôlez-en quelques uns dans l'armée",
+            "influenceRight": 0.10,
+            "moneyRight": 0.0,
+            "populationRight": 0.05,
+            "militaryRight": 0.10
+        },
+        {
+            "id": 18,
+            "isGood" : false,
+            "imageCharacter": "Peppa",
+            "story": "La secte de Peppa pig vous donne un cadea",
+            "leftChoice": "Je veux moins de ressources",
+            "influenceLeft": -0.10,
+            "moneyLeft": -0.10,
+            "populationLeft": -0.10,
+            "militaryLeft": -0.10,
+            "rightChoice": "Je veux plus de ressources",
+            "influenceRight": 0.10,
+            "moneyRight": 0.10,
+            "populationRight": 0.10,
+            "militaryRight": 0.10
         }
     ]
 }

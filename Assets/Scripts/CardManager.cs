@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
@@ -21,6 +22,7 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     public GameObject shadeText;
     public TextMeshProUGUI textCard;
     public TextMeshProUGUI storyCard;
+    public TextMeshProUGUI nameCharacter;
     public TextMeshProUGUI yearsText;
     public TextMeshProUGUI revolutionsText;
     int numberYears = 0;
@@ -30,14 +32,18 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     private bool rotate = false;
     private Vector3 anchorPoint;
     public float returnSpeed = 0.1f;
+    public float returnSpeedSliders = 0.5f;
     public float rotationSpeed = 0.03f;
     public float tranlationYPower = 0.2f;
-    private double limitLeft = Screen.width * 0.3;
-    private double limitRight = Screen.width * 0.7;
     private double limitTextLeft = Screen.width * 0.45;
     private double limitTextRight = Screen.width * 0.55;
     private Queue<int> lastStories = new Queue<int>();
     private float elapsed = 0;
+    private float elapsedDrag = 0;
+    private float influenceValue = 0.5f;
+    private float moneyValue = 0.5f;
+    private float populationValue = 0.5f;
+    private float militaryValue = 0.5f;
 
     /// <summary>
     /// The first card is generated.
@@ -64,7 +70,7 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     /// </summary>
     void Update()
     {
-        if(Input.touchCount == 2 && numberRevolutions > 0)
+        if(Input.touchCount == 2 && numberRevolutions > 0 && this.currentStory.id != -1)
         {
             isDrag = false;
             Vector3 diff = Input.GetTouch(1).position - Input.GetTouch(0).position;
@@ -72,17 +78,17 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
             shadeText.SetActive(false);
             imageCard.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Rad2Deg * angle * 4);
         }
-        if (!isDrag)
+        if (!isDrag && !rotate)
         {
             imageCard.transform.position = Vector2.Lerp(imageCard.transform.position, anchorPoint, returnSpeed);
             imageCard.transform.rotation = Quaternion.Lerp(imageCard.transform.rotation, Quaternion.Euler(0, 0, 0), returnSpeed);
         }
-        if(populationValueSlider.value <= 0 || militaryValueSlider.value <= 0 || moneyValueSlider.value <= 0
-            || populationValueSlider.value >= 1 || militaryValueSlider.value >= 1 || moneyValueSlider.value >= 1)
+        if(populationValue <= 0 || militaryValue <= 0 || moneyValue <= 0
+            || populationValue >= 1 || militaryValue >= 1 || moneyValue >= 1)
         {
             defeatCard();
         }
-        if(rotate)
+        if (rotate)
         {
             elapsed += Time.deltaTime; // Time.deltaTime return the number of seconds elapsed from last frame, usually ~1/60s
             if (elapsed > 3)
@@ -91,13 +97,18 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
                 makeRevolution();
                 rotate = false;
             }
-            imageCard.transform.Rotate(0f, 0f, 20);
+            imageCard.transform.Rotate(0, 0f, 20);
         }
+        moneyValueSlider.value = Mathf.Lerp(moneyValueSlider.value, moneyValue, returnSpeedSliders);
+        influenceValueSlider.value = Mathf.Lerp(influenceValueSlider.value, influenceValue, returnSpeedSliders);
+        populationValueSlider.value = Mathf.Lerp(populationValueSlider.value, populationValue, returnSpeedSliders);
+        militaryValueSlider.value = Mathf.Lerp(militaryValueSlider.value, militaryValue, returnSpeedSliders);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        isDrag = true;
+        if(!rotate)
+            isDrag = true;
     }
 
     /// <summary>
@@ -140,7 +151,7 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         if (isDrag)
         {
             isDrag = false;
-            if (eventData.position.x < limitLeft)
+            if (eventData.position.x < limitTextLeft)
             {
                 //The story wich have -1 for id is the story to ende the game
                 if (currentStory.id == -1)
@@ -152,7 +163,7 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
                     this.leftChoice();
                 }
             }
-            else if (eventData.position.x > limitRight)
+            else if (eventData.position.x > limitTextRight)
             {
                 //The story wich have -1 for id is the story to ende the game
                 //The score is sed to the server
@@ -184,15 +195,16 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     /// </summary>
     private void leftChoice()
     {
-        influenceValueSlider.value += (float)currentStory.influenceLeft;
-        moneyValueSlider.value += (float)currentStory.moneyLeft;
-        populationValueSlider.value += (float)currentStory.populationLeft;
-        militaryValueSlider.value += (float)currentStory.militaryLeft;
+        influenceValue += (float)currentStory.influenceLeft;
+        moneyValue += (float)currentStory.moneyLeft;
+        populationValue += (float)currentStory.populationLeft;
+        militaryValue += (float)currentStory.militaryLeft;
         if (currentStory.storyLeft != null)
         {
             currentStory = currentStory.storyLeft;
             imageCard.sprite = Resources.Load<Sprite>("ImageCard/" + currentStory.imageCharacter);
             storyCard.text = currentStory.story;
+            nameCharacter.text = currentStory.imageCharacter;
         }
         else
         {
@@ -216,15 +228,16 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     /// </summary>
     private void rightChoice()
     {
-        influenceValueSlider.value += (float)currentStory.influenceRight;
-        moneyValueSlider.value += (float)currentStory.moneyRight;
-        populationValueSlider.value += (float)currentStory.populationRight;
-        militaryValueSlider.value += (float)currentStory.militaryRight;
+        influenceValue += (float)currentStory.influenceRight;
+        moneyValue += (float)currentStory.moneyRight;
+        populationValue += (float)currentStory.populationRight;
+        militaryValue += (float)currentStory.militaryRight;
         if (currentStory.storyRight != null)
         {
             currentStory = currentStory.storyRight;
             imageCard.sprite = Resources.Load<Sprite>("ImageCard/" + currentStory.imageCharacter);
             storyCard.text = currentStory.story;
+            nameCharacter.text = currentStory.imageCharacter;
         }
         else
         {
@@ -243,17 +256,17 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     {
         numberRevolutions--;
         revolutionsText.text = numberRevolutions.ToString();
-        if(influenceValueSlider.value > 0.5f)
+        if(influenceValue > 0.5f)
         {
-            influenceValueSlider.value = 0.2f;
-            militaryValueSlider.value = 0.7f;
-            populationValueSlider.value = 0.3f;
+            influenceValue = 0.2f;
+            militaryValue = 0.7f;
+            populationValue = 0.3f;
         }
         else
         {
-            influenceValueSlider.value = 0.8f;
-            militaryValueSlider.value = 0.3f;
-            populationValueSlider.value = 0.7f;
+            influenceValue = 0.8f;
+            militaryValue = 0.3f;
+            populationValue = 0.7f;
         }
         randomCard();
     }
@@ -276,6 +289,7 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         lastStories.Dequeue();
         imageCard.sprite = Resources.Load<Sprite>("ImageCard/" + currentStory.imageCharacter);
         storyCard.text = currentStory.story;
+        nameCharacter.text = currentStory.imageCharacter;
     }
 
     /// <summary>
@@ -284,10 +298,10 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     /// </summary>
     private void defeatCard()
     {
-        influenceValueSlider.value = 0.5f;
-        moneyValueSlider.value = 0;
-        populationValueSlider.value = 0;
-        militaryValueSlider.value = 0;
+        influenceValue = 0.5f;
+        moneyValue = 0;
+        populationValue = 0;
+        militaryValue = 0;
         currentStory.id = -1;
         currentStory.leftChoice = "Retour au menu";
         currentStory.rightChoice = "Retour au menu + envoi du score";
