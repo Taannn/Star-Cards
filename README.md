@@ -21,10 +21,9 @@ Quand on clique sur le bouton "Ladder", nous sommes redirigés vers la page du l
 
 Le bouton "Jouer" nous redirige vers l'écran suivant :
 
-<img src="imagesMD/nom.png" alt="drawing" style="display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 250px;"/>
+<p align="center">
+  <img src="imagesMD/nom.png" alt="drawing" style="width: 250px;"/>
+</p>
 
 Avec cet écran, on choisit le nom du roi qui va régner. Si on ne choisit pas de nom, le nom du roi sera Unknown User.
 
