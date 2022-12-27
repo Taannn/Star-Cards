@@ -43,7 +43,7 @@ Nous pouvons voir en bas de l'écran le nom du souverain, le nombre d'années de
 
 Une révolution permet de changer de faction, et lors du changement de faction, les ressources militaires et de population sont changées pour être plus adéquates à la nouvelle faction. Une nouvelle révolution est disponible tous les 10 ans.
 
-Pour déclencher une révolution, il faut avec nos deux doigts faire une rotation à la cate courante. Ça permet d'ignorer l'histoire courante (dans le cas où elle n'est pas à notre avantage pour le moment) et une animation de la carte tournante est déclenchée pendant 2 secondes.
+Pour déclencher une révolution, il faut avec nos deux doigts faire une rotation à la carte courante. Ça permet d'ignorer l'histoire courante (dans le cas où elle n'est pas à notre avantage pour le moment) et une animation de la carte tournante est déclenchée pendant 2 secondes.
 
 <p align="center">
   <img src="imagesMD/revolution.png" alt="drawing" style="width: 250px;"/>
