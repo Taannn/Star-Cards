@@ -1,6 +1,8 @@
 public static class StaticClass
 {
+    //this property is used to know the faction that we choosed
     private static float influenceValue = 0.5f;
+
     private static string apiURL = "http://141.145.207.63:3000/api/ladder";
     private static string nameUser = "Unknown user";
 

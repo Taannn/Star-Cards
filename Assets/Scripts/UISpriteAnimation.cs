@@ -4,12 +4,9 @@ using UnityEngine.UI;
 
 public class UISpriteAnimation : MonoBehaviour
 {
-
     public Image m_Image;
-
     public Sprite[] m_SpriteArray;
     public float m_Speed = .02f;
-
     private int m_IndexSprite;
     Coroutine m_CorotineAnim;
     bool IsDone;

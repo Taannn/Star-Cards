@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 989
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Scene
   m_RootView: {fileID: 6}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 22
+  controlID: 96
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 84
+  controlID: 19
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 85
+  controlID: 20
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -382,22 +382,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Imports/JSON
+    - Assets/Scripts
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Imports/JSON
+  - Assets/Scripts
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: C:\Users\antoi\OneDrive\Documents\Fac\Master\INFO701_DevMobile\Star-Cards
+  m_LastProjectPath: C:\Users\antoi\Documents\Github\Star-Cards
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 7e610000
-    m_LastClickedID: 24958
-    m_ExpandedIDs: 0000000066610000686100008061000000ca9a3b
+    m_SelectedIDs: 84610000
+    m_LastClickedID: 24964
+    m_ExpandedIDs: 00000000666100006861000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -555,7 +555,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: faecffff40edffff9eeeffffbeeeffff50f2ffff96f2fffff4f3ffff14f4ffff1efbffffde5f0000
+      m_ExpandedIDs: 3ee8ffff86e8ffffeae9fffffce9ffff26fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -826,9 +826,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 581.85345, y: 970.44135, z: -971.30347}
+    m_Target: {x: 501.95828, y: 952.5151, z: -974.8471}
     speed: 2
-    m_Value: {x: 581.85345, y: 970.44135, z: -971.30347}
+    m_Value: {x: 501.95828, y: 952.5151, z: -974.8471}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -879,9 +879,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 1012.21045
+    m_Target: 1042.2542
     speed: 2
-    m_Value: 1012.21045
+    m_Value: 1042.2542
   m_Ortho:
     m_Target: 1
     speed: 2

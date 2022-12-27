@@ -39,8 +39,7 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     private double limitTextRight = Screen.width * 0.55;
     private Queue<int> lastStories = new Queue<int>();
     private float elapsed = 0;
-    private float elapsedDrag = 0;
-    private float influenceValue = 0.5f;
+    private float influenceValue = StaticClass.InfluenceValue;
     private float moneyValue = 0.5f;
     private float populationValue = 0.5f;
     private float militaryValue = 0.5f;
@@ -49,7 +48,7 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     /// The first card is generated.
     /// The initial position of the card is set.
     /// The influence is set according to our faction choice.
-    /// The queue of last stories is set with an id which don't exist
+    /// The queue of last stories is set with an id which doesn't exist
     /// </summary>
     void Start()
     {
@@ -57,7 +56,6 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         lastStories.Enqueue(0);
         lastStories.Enqueue(0);
         textCard.text = "";
-        influenceValueSlider.value = StaticClass.InfluenceValue;
         nameText.text = StaticClass.NameUser;
         cardsInJSON = JsonConvert.DeserializeObject<Stories>(jsonFile.text);
         randomCard();
@@ -65,8 +63,11 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     }
 
     /// <summary>
-    /// If we don't drag, the card return to its position.
-    /// If we game detect that we lost, the defeat card is generated.
+    /// If we don't drag, the card return to its initial position.
+    /// If the game detect that we lost, the defeat card is generated and displayed.
+    /// If we do a revolution, the card will turn during 2 seconds.
+    /// If we use two fingers and the user has a revolution, a revolution is started.
+    /// Visual ressources values are premently updated to be the same that we really have
     /// </summary>
     void Update()
     {
@@ -105,6 +106,11 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         militaryValueSlider.value = Mathf.Lerp(militaryValueSlider.value, militaryValue, returnSpeedSliders);
     }
 
+    /// <summary>
+    /// If we use two finger, we can't drag.
+    /// Else the drag begin.
+    /// </summary>
+    /// <param name="eventData">Finger's position</param>
     public void OnBeginDrag(PointerEventData eventData)
     {
         if(!rotate)
@@ -114,8 +120,9 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     /// <summary>
     /// During the drag, if the position card is after the limits, the choice text appear.
     /// Else, the text disapear.
+    /// If we use two fingers, isDrag is already false and we can't drag.
     /// </summary>
-    /// <param name="eventData"></param>
+    /// <param name="eventData">Finger's position</param>
     public void OnDrag(PointerEventData eventData)
     {
         if (isDrag)
@@ -144,8 +151,9 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     /// <summary>
     /// If the the user drop the card after the limit, a new story is generated.
     /// Else, the card return to its position.
+    /// If we use two fingers, isDrag is already false and we can't make a choice.
     /// </summary>
-    /// <param name="eventData"></param>
+    /// <param name="eventData">Finger's position</param>
     public void OnEndDrag(PointerEventData eventData)
     {
         if (isDrag)
@@ -252,6 +260,10 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         }
     }
 
+    /// <summary>
+    /// This function is called when we do a revolution.
+    /// When we do a revolution, our ressources are updated.
+    /// </summary>
     private void makeRevolution() 
     {
         numberRevolutions--;
@@ -260,12 +272,12 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         {
             influenceValue = 0.2f;
             militaryValue = 0.7f;
-            populationValue = 0.3f;
+            populationValue *= 0.5f;
         }
         else
         {
             influenceValue = 0.8f;
-            militaryValue = 0.3f;
+            militaryValue *= 0.5f;
             populationValue = 0.7f;
         }
         randomCard();
@@ -273,8 +285,8 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     /// <summary>
     /// This function generate a random card.
-    /// While the card was generate in the 3 last rounds, another card will be generate
-    /// Also, while the card is not able to be with our influence, another card will be generate
+    /// While the card was generate in the 3 last rounds, another card will be generate.
+    /// Also, while the card is not able to be with our influence, another card will be generate.
     /// </summary>
     private void randomCard()
     {
@@ -293,8 +305,8 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     }
 
     /// <summary>
-    /// This function generate the defeatCard whan we lost.
-    /// This card allow to end the game and go to menu
+    /// This function generate the defeatCard when we lost.
+    /// This card allow to end the game and go to menu.
     /// </summary>
     private void defeatCard()
     {
@@ -310,7 +322,7 @@ public class CardManager : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     }
 
     /// <summary>
-    /// This function upload our score on the server with a request post
+    /// This function upload our score on the server with a request post.
     /// </summary>
     /// <returns></returns>
     IEnumerator Upload()
