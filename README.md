@@ -5,19 +5,17 @@
 
 Quand on arrive sur l'application, Il y a l'écran suivant comme menu :
 
-<img src="imagesMD/menu.png" alt="drawing" style="display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 250px;"/>
+<p align="center">
+  <img src="imagesMD/menu.png" alt="drawing" style="width: 250px;"/>
+</p>
 
 Le bouton quitter sert à quitter l'application, mais elle tourne toujours en arrière plan.
 
 Quand on clique sur le bouton "Ladder", nous sommes redirigés vers la page du ladder, qui nous montre les 10 meilleurs joueurs du jeu. Une requête est envoyée à l'API quand on clique sur ce bouton et l'écran suivant est affiché :
 
-<img src="imagesMD/ladder.png" alt="drawing" style="display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 250px;"/>
+<p align="center">
+  <img src="imagesMD/ladder.png" alt="drawing" style="width: 250px;"/>
+</p>
 
 Le bouton "Jouer" nous redirige vers l'écran suivant :
 
@@ -29,17 +27,15 @@ Avec cet écran, on choisit le nom du roi qui va régner. Si on ne choisit pas d
 
 Quand on confirme notre nom il y a l'écran suivant :
 
-<img src="imagesMD/choix.png" alt="drawing" style="display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 250px;"/>
+<p align="center">
+  <img src="imagesMD/choix.png" alt="drawing" style="width: 250px;"/>
+</p>
 
 Quand on appuie sur un des différents logos, nous sommes dirigés vers l'écran du jeu avec une barre d'influence dirigée vers les gentils si on choisit les gentils ou les méchants dans l'autre cas.
 
-<img src="imagesMD/debut.png" alt="drawing" style="display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 250px;"/>
+<p align="center">
+  <img src="imagesMD/debut.png" alt="drawing" style="width: 250px;"/>
+</p>
 
 Le jeu se déroule ensuite comme dans le jeu Reigns, avec une gestion des ressources et une barre d'influence. Cette barre d'influence permet d'avoir des histoires communes aux deux factions et des histoires uniques aux méchants. Par exemple, les méchants auront des histoires qui augmenteront principalement les ressources militaires, alors que les gentils ça sera la population. Ce n'est pas vraiment le cas, car je n'étais pas très inspiré lors de la création des histoires, mais c'était le but initial.
 
@@ -49,16 +45,15 @@ Une révolution permet de changer de faction, et lors du changement de faction, 
 
 Pour déclencher une révolution, il faut avec nos deux doigts faire une rotation à la cate courante. Ça permet d'ignorer l'histoire courante (dans le cas où elle n'est pas à notre avantage pour le moment) et une animation de la carte tournante est déclenchée pendant 2 secondes.
 
-<img src="imagesMD/revolution.png" alt="drawing" style="display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 250px;"/>
+<p align="center">
+  <img src="imagesMD/revolution.png" alt="drawing" style="width: 250px;"/>
+</p>
 
 ## Architecture
 
-<img src="imagesMD/architecture.png" alt="drawing" style="display: block;
-  margin-left: auto;
-  margin-right: auto;"/>
+<p align="center">
+  <img src="imagesMD/architecture.png" alt="drawing"/>
+</p>
 
 Pour développer mon application j'ai décidé d'utiliser le moteur de jeu Unity.
 Pour le serveur j'ai choisi d'utiliser un serveur NodeJS utilisant express pour créer une API communiquant avec une base de données SQLite.
