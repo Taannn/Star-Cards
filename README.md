@@ -139,7 +139,7 @@ J'ai testé le responsive en 16:9, 18:9 et 21:9 et ça marche en portrait.
 
 * Ajout de sound effect et d'une musique d'ambiance
 
-* Equilibrage des histoires, certaines histoires donnent ou retirent trop de ressources
+* Équilibrage des histoires, certaines histoires donnent ou retirent trop de ressources
 
 * Changement de la carte courante plus agréable pour l'utilisateur
 
